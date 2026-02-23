@@ -27,8 +27,6 @@ Important: **Design patterns are intentionally not used yet** in the instruction
 - Ex1–Ex2: SRP
 - Ex3–Ex4: OCP
 - Ex5–Ex6: LSP
-- Ex7–Ex8: ISP
-- Ex9–Ex10: DIP
 
 ## Running any exercise
 From the exercise folder (example: `SOLID/Ex1/src`):

@@ -4,10 +4,10 @@ public class LegacyFlags {
     public static final int SUSPENDED = 2;
 
     public static String nameOf(int f) {
-        return switch (f) {
-            case WARNING -> "WARNING";
-            case SUSPENDED -> "SUSPENDED";
-            default -> "NONE";
-        };
+        switch (f) {
+            case WARNING: return "WARNING";
+            case SUSPENDED: return "SUSPENDED";
+            default: return "NONE";
+        }
     }
 }

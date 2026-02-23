@@ -5,11 +5,11 @@ public class LegacyRoomTypes {
     public static final int DELUXE = 4;
 
     public static String nameOf(int t) {
-        return switch (t) {
-            case SINGLE -> "SINGLE";
-            case DOUBLE -> "DOUBLE";
-            case TRIPLE -> "TRIPLE";
-            default -> "DELUXE";
-        };
+        switch (t) {
+            case SINGLE: return "SINGLE";
+            case DOUBLE: return "DOUBLE";
+            case TRIPLE: return "TRIPLE";
+            default: return "DELUXE";
+        }
     }
 }
