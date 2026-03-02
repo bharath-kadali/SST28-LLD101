@@ -13,4 +13,4 @@ public class StudentRecord {
     public String toString() {
         return "StudentRecord{id='" + id + "', name='" + name + "', email='" + email + "', phone='" + phone + "', program='" + program + "'}";
     }
-}
+}   
