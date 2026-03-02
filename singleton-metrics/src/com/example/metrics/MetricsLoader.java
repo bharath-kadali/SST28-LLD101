@@ -21,8 +21,8 @@ public class MetricsLoader {
             props.load(fis);
         }
 
-        // BROKEN: should not create a new instance
-        MetricsRegistry registry = new MetricsRegistry();
+        // use the shared singleton instead of creating a fresh object
+        MetricsRegistry registry = MetricsRegistry.getInstance();
 
         for (String key : props.stringPropertyNames()) {
             String raw = props.getProperty(key, "0").trim();

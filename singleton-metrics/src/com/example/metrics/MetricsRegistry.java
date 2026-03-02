@@ -25,20 +25,32 @@ public class MetricsRegistry implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static MetricsRegistry INSTANCE; // BROKEN: not volatile, not thread-safe
+    // flag used to detect illicit constructor calls (reflection)
+    private static volatile boolean instanceCreated = false;
+
     private final Map<String, Long> counters = new HashMap<>();
 
-    // BROKEN: should be private and should prevent second construction
-    public MetricsRegistry() {
-        // intentionally empty
+    /*
+     * Private constructor helps enforce singleton and also guards against
+     * reflection attacks by checking the flag. If an instance already exists
+     * we throw to prevent creation of a second object.
+     */
+    private MetricsRegistry() {
+        if (instanceCreated) {
+            throw new IllegalStateException("MetricsRegistry singleton already created");
+        }
+        instanceCreated = true;
     }
 
-    // BROKEN: racy lazy init; two threads can create two instances
+    /**
+     * Holder idiom for lazy-loaded, thread-safe initialization.
+     */
+    private static class Holder {
+        static final MetricsRegistry INSTANCE = new MetricsRegistry();
+    }
+
     public static MetricsRegistry getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MetricsRegistry();
-        }
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     public synchronized void setCount(String key, long value) {
@@ -57,5 +69,12 @@ public class MetricsRegistry implements Serializable {
         return Collections.unmodifiableMap(new HashMap<>(counters));
     }
 
-    // TODO: implement readResolve() to preserve singleton on deserialization
+    /**
+     * Ensures that deserialization does not create a new instance.
+     * The JVM will invoke this method after reading the object; returning
+     * the existing singleton preserves the singleton guarantee.
+     */
+    private Object readResolve() {
+        return getInstance();
+    }
 }
